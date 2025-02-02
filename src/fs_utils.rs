@@ -60,7 +60,7 @@ mod tests {
         let file_path = dir.path().join("35.test-file.txt");
         File::create(&file_path)?;
 
-        process_file(&file_path)?;
+        process_file(&file_path, Logger::Quiet)?;
 
         assert!(dir.path().join("test_file_35.txt").exists());
         Ok(())
@@ -68,7 +68,24 @@ mod tests {
 
     #[test]
     fn test_invalid_path() {
-        let result = process_path(Path::new("/nonexistent/path"));
+        let path = Path::new("/nonexistent/path");
+        let result = process_path(path, Logger::Quiet);
         assert!(result.is_err());
+        assert!(result.unwrap_err().to_string().contains("Path does not exist"));
+    }
+
+    #[test]
+    fn test_directory_processing() -> Result<()> {
+        let dir = tempdir()?;
+        
+        // Создаем тестовую структуру файлов
+        File::create(dir.path().join("01.test-a.txt"))?;
+        File::create(dir.path().join("02.test-b.txt"))?;
+        
+        process_directory(dir.path(), Logger::Quiet)?;
+
+        assert!(dir.path().join("test_a_01.txt").exists());
+        assert!(dir.path().join("test_b_02.txt").exists());
+        Ok(())
     }
 }

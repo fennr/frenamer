@@ -45,11 +45,29 @@ mod tests {
             generate_new_filename("test-file.123.txt")?,
             "test_file_123.txt"
         );
+        assert_eq!(
+            generate_new_filename("nodigits.txt")?,
+            "nodigits.txt"
+        );
+        assert_eq!(
+            generate_new_filename("123.txt")?,
+            "123.txt"
+        );
         Ok(())
     }
 
     #[test]
     fn test_empty_filename() {
-        assert!(generate_new_filename("").is_err());
+        let result = generate_new_filename("");
+        assert!(result.is_err());
+        assert!(result.unwrap_err().to_string().contains("Empty filename"));
+    }
+
+    #[test]
+    fn test_split_filename() {
+        assert_eq!(split_filename("test.txt"), ("test", "txt"));
+        assert_eq!(split_filename("test"), ("test", ""));
+        assert_eq!(split_filename(".gitignore"), ("", "gitignore"));
+        assert_eq!(split_filename("multiple.dots.txt"), ("multiple.dots", "txt"));
     }
 }
