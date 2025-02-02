@@ -1,0 +1,19 @@
+[package]
+name = "frenamer"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "Утилита для переименования файлов по заданным правилам"
+readme = "README.md"
+license = "MIT"    # Укажите подходящую лицензию
+repository = "https://github.com/fennr/frenamer"  # Ссылка на репозиторий (если есть)
+keywords = ["cli", "rename", "file"]  # Ключевые слова для поиска
+categories = ["command-line-utilities"]  # Категории на crates.io
+
+[dependencies]
+clap = { version = "4.4", features = ["derive", "help"] }
+walkdir = "2.4"
+anyhow = "1.0"
+
+[dev-dependencies]
+tempfile = "3.8"
